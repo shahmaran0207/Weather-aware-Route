@@ -1,4 +1,5 @@
 import { GlassCard } from "./components/GlassCard";
+import { MapView } from "./components/MapView";
 
 export default function Home() {
   return (
@@ -26,6 +27,8 @@ export default function Home() {
           <p className="mt-1 text-lg text-accent-cyan">⭐⭐⭐⭐⭐</p>
         </GlassCard>
       </div>
+
+      <MapView />
     </main>
   );
 }
