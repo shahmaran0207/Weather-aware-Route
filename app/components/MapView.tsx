@@ -3,6 +3,7 @@
 import { Map as MaplibreMap, Marker } from "maplibre-gl";
 import { useEffect, useRef, useState } from "react";
 import "maplibre-gl/dist/maplibre-gl.css";
+import type { Coordinates } from "../lib/types";
 
 // 완전 무료, API 키 불필요한 벡터 타일 스타일 (OpenFreeMap)
 const MAP_STYLE_URL = "https://tiles.openfreemap.org/styles/liberty";
@@ -11,12 +12,12 @@ const MAP_STYLE_URL = "https://tiles.openfreemap.org/styles/liberty";
 const DEFAULT_CENTER: [number, number] = [129.0756, 35.1796];
 const DEFAULT_ZOOM = 13;
 
-type Coordinates = {
-  lat: number;
-  lng: number;
+type MapViewProps = {
+  // 현재 위치가 갱신될 때마다 상위 컴포넌트에 알려줌 (날씨 조회 등에 사용)
+  onPositionChange?: (position: Coordinates) => void;
 };
 
-export function MapView() {
+export function MapView({ onPositionChange }: MapViewProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<MaplibreMap | null>(null);
   const markerRef = useRef<Marker | null>(null);
@@ -53,6 +54,7 @@ export function MapView() {
             const lat = position.coords.latitude;
             const lng = position.coords.longitude;
             setCurrentPosition({lat, lng});
+            onPositionChange?.({ lat, lng });
           },
           (error) => {
             setLocationError(error.message);

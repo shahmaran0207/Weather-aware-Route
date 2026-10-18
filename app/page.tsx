@@ -1,7 +1,14 @@
+"use client";
+
+import { useState } from "react";
 import { GlassCard } from "./components/GlassCard";
 import { MapView } from "./components/MapView";
+import { WeatherCard } from "./components/WeatherCard";
+import type { Coordinates } from "./lib/types";
 
 export default function Home() {
+  const [position, setPosition] = useState<Coordinates | null>(null);
+
   return (
     <main className="flex min-h-screen flex-col gap-6 p-8">
       <div>
@@ -18,17 +25,14 @@ export default function Home() {
           <p className="text-sm text-text-secondary">현재 위치</p>
           <p className="mt-1 text-lg">부산 강서구</p>
         </GlassCard>
-        <GlassCard>
-          <p className="text-sm text-text-secondary">날씨</p>
-          <p className="mt-1 text-lg">맑음 · 31℃</p>
-        </GlassCard>
+        <WeatherCard coordinates={position} />
         <GlassCard>
           <p className="text-sm text-text-secondary">환경 점수</p>
           <p className="mt-1 text-lg text-accent-cyan">⭐⭐⭐⭐⭐</p>
         </GlassCard>
       </div>
 
-      <MapView />
+      <MapView onPositionChange={setPosition} />
     </main>
   );
 }
